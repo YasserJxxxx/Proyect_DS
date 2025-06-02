@@ -1,0 +1,128 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace web_pubs
+{
+    public partial class Consultas : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private pubsEntities pubs= new pubsEntities();
+        protected void btnConsultas_Click(object sender, EventArgs e)
+        {
+            var consulta = from p in pubs.jobs
+                           where p.max_lvl>=180
+                           select p;
+            gvConsulta.DataSource = consulta.ToList();
+            gvConsulta.DataBind();
+        }
+
+        protected void btnConsulta2_Click(object sender, EventArgs e)
+        {
+            var consulta = from p in pubs.titles
+                           select new{
+                                p.title_id,
+                                p.title,
+                                p.type,
+                                p.price
+                             }
+            ;
+            gvConsulta2.DataSource= consulta.ToList();
+            gvConsulta2.DataBind();
+        }
+
+        protected void btnConsultaV_Click(object sender, EventArgs e)
+        {
+            var consulta = from p in pubs.sales
+                           where p.stor_id == txtIdventas.Text
+                           select p;
+            gvConsultaV.DataSource= consulta.ToList();
+            gvConsultaV.DataBind();
+        }
+
+        protected void btnConsultaE_Click(object sender, EventArgs e)
+        {
+            DateTime fecha = new DateTime(1992, 08, 27);
+            var consulta = from p in pubs.employee
+                           where p.hire_date == fecha
+                           select p;
+            gvConsultaE.DataSource= consulta.ToList();
+            gvConsultaE.DataBind();
+        }
+
+        protected void btnConsultarEP_Click(object sender, EventArgs e)
+        {
+            var consulta = from p in pubs.employee
+                           select new
+                           {
+                               p.emp_id,
+                               p.lname,
+                               p.fname
+                           };
+            gvConsultarEP.DataSource = consulta.ToList();
+            gvConsultarEP.DataBind();
+        }
+
+        protected void btnConsultarT_Click(object sender, EventArgs e)
+        {
+            var consulta = from p in pubs.stores
+                           select new
+                           {
+                               p.stor_name,
+                               p.city,
+                               p.stor_address
+                           };
+            gvConsultarT.DataSource = consulta.ToList();
+            gvConsultarT.DataBind();
+        }
+
+        protected void btnConsultaJR_Click(object sender, EventArgs e)
+        {
+            var consulta = from p in pubs.jobs
+                           select new
+                           {
+                               id_Trabajo = p.job_id,
+                               Cargo = p.job_desc,
+                               sueldo_Min = p.min_lvl,
+                               sueldo_Max = p.max_lvl
+                           };
+            gvConsultaJR.DataSource = consulta.ToList();
+            gvConsultaJR.DataBind();
+        }
+
+        protected void consultaDR_Click(object sender, EventArgs e)
+        {
+            var consulta = from p in pubs.discounts
+                           select new
+                           {
+                               tipo_descuento = p.discounttype,
+                               id_tienda = p.stor_id,
+                               baja_cantidad = p.lowqty,
+                               alta_cantidad = p.highqty,
+                               descuento =p.discount
+                           };
+            gvConsultaDR.DataSource = consulta.ToList();
+            gvConsultaDR.DataBind();
+        }
+
+        protected void btnConsultarI_Click(object sender, EventArgs e)
+        {
+            var consulta = from p in pubs.pub_info
+                           select new
+                           {
+                               id = p.pub_id,
+                               Logo = p.logo,
+                               descripcion = p.pr_info
+                           };
+            gvConsultaI.DataSource = consulta.ToList();
+            gvConsultaI.DataBind();
+        }
+    }
+}
